@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Sana Bir Mesajım Var ❤️</title>
+    <title>Nisa'm İçin ❤️</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    
     <style>
         body { 
             display: flex; 
@@ -13,8 +16,7 @@
             justify-content: center; 
             height: 100vh; 
             margin: 0; 
-            font-family: 'Segoe UI', Roboto, sans-serif; 
-            /* Soft Loft: Turuncu ve Mor Degrade Arka Plan */
+            font-family: 'Dancing Script', cursive; 
             background: linear-gradient(135deg, #ffcc33 0%, #cc99ff 100%);
             overflow: hidden;
             touch-action: none;
@@ -22,89 +24,113 @@
             position: relative;
         }
 
-        /* Çiçekli Saydam Arka Plan Katmanı */
-        .flower-bg {
+        /* Çiçeklerin dairesel dönme animasyonu */
+        @keyframes rotateFlower {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .flower {
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none;
-            opacity: 0.3; /* Saydamlık */
-            font-size: 2rem;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            align-content: space-around;
+            opacity: 0.4;
             z-index: 1;
+            animation: rotateFlower 4s linear infinite;
+            user-select: none;
         }
 
         #mesaj { 
             font-weight: bold; 
             text-align: center; 
             color: #ffffff;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            margin-bottom: 40px;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            margin-bottom: 50px;
             z-index: 10;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            line-height: 1.4;
-            max-width: 80%;
+            line-height: 1.3;
+            max-width: 90%;
+            font-size: 36px;
         }
 
         .btn-container {
             display: flex;
-            gap: 20px;
+            gap: 25px;
+            flex-direction: column;
             align-items: center;
             z-index: 10;
         }
 
         #evetBtn { 
-            background-color: rgba(255, 255, 255, 0.9); 
+            background-color: rgba(255, 255, 255, 0.95); 
             color: #d63384; border: none; 
-            padding: 15px 35px; border-radius: 50px; 
-            cursor: pointer; font-size: 18px; font-weight: bold;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            padding: 18px 35px; border-radius: 50px; 
+            cursor: pointer; 
+            font-family: 'Dancing Script', cursive;
+            font-size: 22px; 
+            font-weight: bold;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
             transition: all 0.3s ease;
-            white-space: nowrap;
+            text-align: center;
         }
 
         #hayirBtn { 
-            background-color: rgba(0, 0, 0, 0.2); 
-            color: white; border: none; 
-            padding: 15px 30px; border-radius: 50px; 
-            cursor: pointer; font-size: 18px;
+            background-color: rgba(0, 0, 0, 0.15); 
+            color: rgba(255,255,255,0.9); border: none; 
+            padding: 10px 25px; border-radius: 50px; 
+            cursor: pointer; 
+            font-family: 'Dancing Script', cursive;
+            font-size: 18px;
             position: relative;
             backdrop-filter: blur(5px);
             transition: all 0.2s ease;
         }
 
-        /* Final Mesajı İçin Özel Stil */
         .final-glass {
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(15px);
-            padding: 30px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(20px);
+            padding: 40px 25px;
+            border-radius: 35px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.2);
         }
     </style>
 </head>
-<body>
+<body id="body">
 
-    <div class="flower-bg">
-        <span>🌸</span><span>🌼</span><span>🌺</span><span>🌻</span>
-        <span>🌷</span><span>🌸</span><span>🌼</span><span>🌺</span>
-        <span>🌻</span><span>🌷</span><span>🌸</span><span>🌼</span>
-        <span>🌺</span><span>🌻</span><span>🌷</span><span>🌸</span>
-        <span>🌼</span><span>🌺</span><span>🌻</span><span>🌷</span>
-    </div>
-
-    <div id="mesaj">Beni ne kadar seviyorsun?</div>
+    <div id="mesaj">Seni çok seviyorum Nisa'm ♥</div>
 
     <div class="btn-container" id="container">
-        <button id="evetBtn" onclick="evetTikla()">Ben de seni seviyorum!</button>
+        <button id="evetBtn" onclick="evetTikla()">Ben de seni çok seviyorum Alperen'im ♥</button>
         <button id="hayirBtn" onmouseover="kac()" onclick="kac()">Hayır</button>
     </div>
 
     <script>
-        let fSize = 24;
+        // Sayfa yüklendiğinde 100 tane rastgele pembe papatya oluştur
+        window.onload = function() {
+            const flowerCount = 100;
+            const body = document.getElementById('body');
+            const flowers = ['🌸', '💮']; // Pembe papatyamsı çiçekler
+
+            for (let i = 0; i < flowerCount; i++) {
+                let f = document.createElement('div');
+                f.className = 'flower';
+                f.innerText = flowers[Math.floor(Math.random() * flowers.length)];
+                
+                // Rastgele konumlar
+                f.style.left = Math.random() * 100 + 'vw';
+                f.style.top = Math.random() * 100 + 'vh';
+                
+                // Rastgele boyutlar (minik)
+                f.style.fontSize = (Math.random() * 15 + 10) + 'px';
+                
+                // Rastgele dönüş hızı (biraz varyasyon iyidir)
+                f.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                
+                body.appendChild(f);
+            }
+        };
+
+        let fSize = 36;
         let evetScale = 1;
         let tiklamaSayisi = 0;
 
@@ -117,49 +143,12 @@
             const evetBtn = document.getElementById('evetBtn');
             const container = document.getElementById('container');
 
-            mesajEl.innerHTML = "Seni Seviyorum! ❤️";
             mesajEl.style.fontSize = fSize + "px";
             evetBtn.style.transform = `scale(${evetScale})`;
 
-            if(tiklamaSayisi >= 6) {
+            if(tiklamaSayisi >= 5) {
                 patlat();
                 mesajEl.innerHTML = "Bir gün seninle mutlu bir yuva kuracağız sevgilim. Her yeni güne birlikte uyanacağız. Her zerremle aşığım...";
                 mesajEl.classList.add("final-glass");
-                mesajEl.style.fontSize = "28px";
-                mesajEl.style.color = "#ffffff";
-                
-                container.style.display = 'none';
-            }
-        }
-
-        function kac() {
-            const btn = document.getElementById('hayirBtn');
-            const x = Math.random() * (window.innerWidth - btn.clientWidth - 50);
-            const y = Math.random() * (window.innerHeight - btn.clientHeight - 50);
-            
-            btn.style.position = 'absolute';
-            btn.style.left = x + 'px';
-            btn.style.top = y + 'px';
-        }
-
-        function patlat() {
-            var duration = 20 * 1000;
-            var animationEnd = Date.now() + duration;
-            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 100 };
-
-            function randomInRange(min, max) {
-              return Math.random() * (max - min) + min;
-            }
-
-            var interval = setInterval(function() {
-              var timeLeft = animationEnd - Date.now();
-              if (timeLeft <= 0) return clearInterval(interval);
-
-              var particleCount = 40 * (timeLeft / duration);
-              confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
-              confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
-            }, 250);
-        }
-    </script>
-</body>
-</html>
+                mesajEl.style.fontSize = "32px";
+                mesajEl
