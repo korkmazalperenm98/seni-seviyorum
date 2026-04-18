@@ -24,7 +24,6 @@
             position: relative;
         }
 
-        /* Çiçeklerin dairesel dönme animasyonu */
         @keyframes rotateFlower {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
@@ -32,9 +31,9 @@
 
         .flower {
             position: absolute;
-            pointer-events: none;
+            pointer-events: none; 
             opacity: 0.4;
-            z-index: 1;
+            z-index: 1; 
             animation: rotateFlower 4s linear infinite;
             user-select: none;
         }
@@ -46,7 +45,7 @@
             text-shadow: 0 4px 15px rgba(0,0,0,0.2);
             margin-bottom: 50px;
             z-index: 10;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.4s ease;
             line-height: 1.3;
             max-width: 90%;
             font-size: 36px;
@@ -57,7 +56,8 @@
             gap: 25px;
             flex-direction: column;
             align-items: center;
-            z-index: 10;
+            z-index: 20;
+            position: relative;
         }
 
         #evetBtn { 
@@ -69,20 +69,23 @@
             font-size: 22px; 
             font-weight: bold;
             box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-            transition: all 0.3s ease;
-            text-align: center;
+            transition: transform 0.2s ease;
+            z-index: 30;
         }
 
         #hayirBtn { 
-            background-color: rgba(0, 0, 0, 0.15); 
-            color: rgba(255,255,255,0.9); border: none; 
+            background-color: rgba(255, 255, 255, 0.15); 
+            color: rgba(255,255,255,0.9); border: 2px solid white; 
             padding: 10px 25px; border-radius: 50px; 
             cursor: pointer; 
             font-family: 'Dancing Script', cursive;
             font-size: 18px;
-            position: relative;
+            position: absolute; 
+            top: 110%; 
             backdrop-filter: blur(5px);
-            transition: all 0.2s ease;
+            z-index: 30;
+            transition: all 0.1s ease;
+            white-space: nowrap;
         }
 
         .final-glass {
@@ -91,7 +94,7 @@
             padding: 40px 25px;
             border-radius: 35px;
             border: 1px solid rgba(255, 255, 255, 0.4);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+            z-index: 50;
         }
     </style>
 </head>
@@ -99,33 +102,25 @@
 
     <div id="mesaj">Seni çok seviyorum Nisa'm ♥</div>
 
-    <div class="btn-container" id="container">
+    <div class="btn-container" id="container" style="min-height: 150px;">
         <button id="evetBtn" onclick="evetTikla()">Ben de seni çok seviyorum Alperen'im ♥</button>
-        <button id="hayirBtn" onmouseover="kac()" onclick="kac()">Hayır</button>
+        <button id="hayirBtn" onmouseover="kac()" ontouchstart="kac()" onclick="kac()">götünü yerim</button>
     </div>
 
     <script>
-        // Sayfa yüklendiğinde 100 tane rastgele pembe papatya oluştur
         window.onload = function() {
-            const flowerCount = 100;
+            const flowerCount = 60;
             const body = document.getElementById('body');
-            const flowers = ['🌸', '💮']; // Pembe papatyamsı çiçekler
+            const flowers = ['🌸', '💮'];
 
             for (let i = 0; i < flowerCount; i++) {
                 let f = document.createElement('div');
                 f.className = 'flower';
                 f.innerText = flowers[Math.floor(Math.random() * flowers.length)];
-                
-                // Rastgele konumlar
-                f.style.left = Math.random() * 100 + 'vw';
-                f.style.top = Math.random() * 100 + 'vh';
-                
-                // Rastgele boyutlar (minik)
-                f.style.fontSize = (Math.random() * 15 + 10) + 'px';
-                
-                // Rastgele dönüş hızı (biraz varyasyon iyidir)
+                f.style.left = Math.random() * 95 + 'vw';
+                f.style.top = Math.random() * 95 + 'vh';
+                f.style.fontSize = (Math.random() * 15 + 15) + 'px';
                 f.style.animationDuration = (Math.random() * 3 + 2) + 's';
-                
                 body.appendChild(f);
             }
         };
@@ -133,22 +128,73 @@
         let fSize = 36;
         let evetScale = 1;
         let tiklamaSayisi = 0;
+        let finalMod = false;
 
         function evetTikla() {
             tiklamaSayisi++;
-            fSize += 10;
-            evetScale += 0.25;
+            fSize += 8;
+            evetScale += 0.2;
             
             const mesajEl = document.getElementById('mesaj');
             const evetBtn = document.getElementById('evetBtn');
-            const container = document.getElementById('container');
+            const hayirBtn = document.getElementById('hayirBtn');
 
             mesajEl.style.fontSize = fSize + "px";
             evetBtn.style.transform = `scale(${evetScale})`;
 
             if(tiklamaSayisi >= 5) {
+                finalMod = true;
                 patlat();
                 mesajEl.innerHTML = "Bir gün seninle mutlu bir yuva kuracağız sevgilim. Her yeni güne birlikte uyanacağız. Her zerremle aşığım...";
                 mesajEl.classList.add("final-glass");
-                mesajEl.style.fontSize = "32px";
-                mesajEl
+                mesajEl.style.fontSize = "30px";
+                
+                evetBtn.style.display = 'none';
+                hayirBtn.style.display = 'none'; // Önce bi kaybolsun
+
+                // 4 saniye sonra geri gelsin ama artık kaçmasın
+                setTimeout(() => {
+                    hayirBtn.style.display = 'block';
+                    hayirBtn.style.position = 'relative';
+                    hayirBtn.style.top = '0';
+                    hayirBtn.style.left = '0';
+                    hayirBtn.style.marginTop = '20px';
+                    hayirBtn.style.backgroundColor = "white";
+                    hayirBtn.style.color = "#d63384";
+                    // Kaçma fonksiyonunu iptal etmek için yeni bir tıklama atıyoruz
+                    hayirBtn.onmouseover = null;
+                    hayirBtn.ontouchstart = null;
+                    hayirBtn.onclick = finalCevap;
+                }, 4000);
+            }
+        }
+
+        function kac() {
+            if(finalMod) return; // Finalde kaçmasın
+            const btn = document.getElementById('hayirBtn');
+            const newX = Math.random() * (window.innerWidth - btn.clientWidth - 20);
+            const newY = Math.random() * (window.innerHeight - btn.clientHeight - 20);
+            btn.style.position = 'fixed';
+            btn.style.left = newX + 'px';
+            btn.style.top = newY + 'px';
+        }
+
+        function finalCevap() {
+            const mesajEl = document.getElementById('mesaj');
+            mesajEl.innerHTML += "<br><br><span style='color:yellow; font-size: 36px;'>Biliyorum, ben de senin götünü yerim ♥</span>";
+            document.getElementById('hayirBtn').style.display = 'none';
+            patlat(); // Tekrar konfeti!
+        }
+
+        function patlat() {
+            var duration = 10 * 1000;
+            var animationEnd = Date.now() + duration;
+            var interval = setInterval(function() {
+              var timeLeft = animationEnd - Date.now();
+              if (timeLeft <= 0) return clearInterval(interval);
+              confetti({ particleCount: 40, spread: 360, origin: { x: Math.random(), y: Math.random() - 0.2 } });
+            }, 250);
+        }
+    </script>
+</body>
+</html>
