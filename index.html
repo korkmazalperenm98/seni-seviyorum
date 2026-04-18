@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sana Bir Mesajım Var ❤️</title>
+    <style>
+        body { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            height: 100vh; 
+            margin: 0; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #fff0f0;
+            overflow: hidden; 
+            touch-action: manipulation; /* Mobil tıklamayı hızlandırır */
+        }
+        #mesaj { 
+            font-weight: bold; 
+            text-align: center; 
+            color: #d63384;
+            margin-bottom: 20px;
+            transition: all 0.2s ease;
+        }
+        button { 
+            background-color: #ff4d4d; 
+            color: white; 
+            border: none; 
+            padding: 15px 30px; 
+            border-radius: 50px; 
+            cursor: pointer; 
+            font-size: 18px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.2s ease;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="mesaj" style="font-size: 24px;">Seni Seviyorum!</div>
+    <button id="btn" onclick="buyut()">Ben de seni seviyorum</button>
+
+    <script>
+        let fSize = 24;
+        let btnScale = 1;
+
+        function buyut() {
+            fSize += 12; // Yazı büyüme hızı
+            btnScale += 0.3; // Buton büyüme hızı
+            
+            const mesajEl = document.getElementById('mesaj');
+            const btnEl = document.getElementById('btn');
+            
+            mesajEl.style.fontSize = fSize + "px";
+            btnEl.style.transform = `scale(${btnScale})`;
+            
+            // Ekran dolduğunda arka planı değiştir
+            if(fSize > 80) {
+                document.body.style.backgroundColor = "#ffc1cc";
+            }
+        }
+    </script>
+</body>
+</html>
