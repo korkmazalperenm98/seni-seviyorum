@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Sana Bir Sürprizim Var ❤️</title>
+    <title>Sana Bir Mesajım Var ❤️</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
         body { 
@@ -13,53 +13,92 @@
             justify-content: center; 
             height: 100vh; 
             margin: 0; 
-            font-family: 'Segoe UI', sans-serif; 
-            background-color: #fff0f0;
+            font-family: 'Segoe UI', Roboto, sans-serif; 
+            /* Soft Loft: Turuncu ve Mor Degrade Arka Plan */
+            background: linear-gradient(135deg, #ffcc33 0%, #cc99ff 100%);
             overflow: hidden;
             touch-action: none;
+            padding: 20px;
+            position: relative;
         }
+
+        /* Çiçekli Saydam Arka Plan Katmanı */
+        .flower-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            opacity: 0.3; /* Saydamlık */
+            font-size: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-content: space-around;
+            z-index: 1;
+        }
+
         #mesaj { 
             font-weight: bold; 
             text-align: center; 
-            color: #d63384;
+            color: #ffffff;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.1);
             margin-bottom: 40px;
             z-index: 10;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            line-height: 1.4;
+            max-width: 80%;
         }
+
         .btn-container {
             display: flex;
             gap: 20px;
             align-items: center;
             z-index: 10;
         }
+
         #evetBtn { 
-            background-color: #ff4d4d; 
-            color: white; border: none; 
-            padding: 15px 30px; border-radius: 50px; 
-            cursor: pointer; font-size: 18px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            transition: all 0.2s ease;
+            background-color: rgba(255, 255, 255, 0.9); 
+            color: #d63384; border: none; 
+            padding: 15px 35px; border-radius: 50px; 
+            cursor: pointer; font-size: 18px; font-weight: bold;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            white-space: nowrap;
         }
+
         #hayirBtn { 
-            background-color: #888; 
+            background-color: rgba(0, 0, 0, 0.2); 
             color: white; border: none; 
             padding: 15px 30px; border-radius: 50px; 
             cursor: pointer; font-size: 18px;
             position: relative;
-            transition: all 0.1s ease;
+            backdrop-filter: blur(5px);
+            transition: all 0.2s ease;
+        }
+
+        /* Final Mesajı İçin Özel Stil */
+        .final-glass {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(15px);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
         }
     </style>
 </head>
 <body>
 
-    <iframe style="display:none" width="0" height="0" src="https://www.youtube.com/embed/ZIsZfR9fOls?autoplay=1" frameborder="0" allow="autoplay"></iframe>
-    <audio id="bgMusic" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-    </audio>
+    <div class="flower-bg">
+        <span>🌸</span><span>🌼</span><span>🌺</span><span>🌻</span>
+        <span>🌷</span><span>🌸</span><span>🌼</span><span>🌺</span>
+        <span>🌻</span><span>🌷</span><span>🌸</span><span>🌼</span>
+        <span>🌺</span><span>🌻</span><span>🌷</span><span>🌸</span>
+        <span>🌼</span><span>🌺</span><span>🌻</span><span>🌷</span>
+    </div>
 
-    <div id="mesaj">Beni ne kadar seviyorsun? <br> (Yoksa hala tıkla demedin mi?)</div>
+    <div id="mesaj">Beni ne kadar seviyorsun?</div>
 
-    <div class="btn-container">
+    <div class="btn-container" id="container">
         <button id="evetBtn" onclick="evetTikla()">Ben de seni seviyorum!</button>
         <button id="hayirBtn" onmouseover="kac()" onclick="kac()">Hayır</button>
     </div>
@@ -68,37 +107,35 @@
         let fSize = 24;
         let evetScale = 1;
         let tiklamaSayisi = 0;
-        const bgMusic = document.getElementById('bgMusic');
 
         function evetTikla() {
             tiklamaSayisi++;
-            fSize += 15;
-            evetScale += 0.4;
+            fSize += 10;
+            evetScale += 0.25;
             
             const mesajEl = document.getElementById('mesaj');
             const evetBtn = document.getElementById('evetBtn');
-            const hayirBtn = document.getElementById('hayirBtn');
-
-            // Müziği başlat (Tarayıcı engellemesini aşmak için ilk tıkta çalışır)
-            bgMusic.play().catch(() => {});
+            const container = document.getElementById('container');
 
             mesajEl.innerHTML = "Seni Seviyorum! ❤️";
             mesajEl.style.fontSize = fSize + "px";
             evetBtn.style.transform = `scale(${evetScale})`;
 
-            // Final: 5. tıklamada konfeti patlat
-            if(tiklamaSayisi >= 5) {
+            if(tiklamaSayisi >= 6) {
                 patlat();
-                mesajEl.innerHTML = "SONSUZA KADAR! ❤️🌹";
-                hayirBtn.style.display = 'none'; // Hayır butonunu yok et
+                mesajEl.innerHTML = "Bir gün seninle mutlu bir yuva kuracağız sevgilim. Her yeni güne birlikte uyanacağız. Her zerremle aşığım...";
+                mesajEl.classList.add("final-glass");
+                mesajEl.style.fontSize = "28px";
+                mesajEl.style.color = "#ffffff";
+                
+                container.style.display = 'none';
             }
         }
 
         function kac() {
             const btn = document.getElementById('hayirBtn');
-            // Ekran sınırları içinde rastgele bir yere kaç
-            const x = Math.random() * (window.innerWidth - btn.clientWidth);
-            const y = Math.random() * (window.innerHeight - btn.clientHeight);
+            const x = Math.random() * (window.innerWidth - btn.clientWidth - 50);
+            const y = Math.random() * (window.innerHeight - btn.clientHeight - 50);
             
             btn.style.position = 'absolute';
             btn.style.left = x + 'px';
@@ -106,9 +143,9 @@
         }
 
         function patlat() {
-            var duration = 15 * 1000;
+            var duration = 20 * 1000;
             var animationEnd = Date.now() + duration;
-            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 100 };
 
             function randomInRange(min, max) {
               return Math.random() * (max - min) + min;
@@ -116,12 +153,9 @@
 
             var interval = setInterval(function() {
               var timeLeft = animationEnd - Date.now();
+              if (timeLeft <= 0) return clearInterval(interval);
 
-              if (timeLeft <= 0) {
-                return clearInterval(interval);
-              }
-
-              var particleCount = 50 * (timeLeft / duration);
+              var particleCount = 40 * (timeLeft / duration);
               confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
               confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
             }, 250);
