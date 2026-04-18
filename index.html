@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Sana Bir Mesajım Var ❤️</title>
+    <title>Sana Bir Sürprizim Var ❤️</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
         body { 
             display: flex; 
@@ -12,54 +13,118 @@
             justify-content: center; 
             height: 100vh; 
             margin: 0; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            font-family: 'Segoe UI', sans-serif; 
             background-color: #fff0f0;
-            overflow: hidden; 
-            touch-action: manipulation; /* Mobil tıklamayı hızlandırır */
+            overflow: hidden;
+            touch-action: none;
         }
         #mesaj { 
             font-weight: bold; 
             text-align: center; 
             color: #d63384;
-            margin-bottom: 20px;
-            transition: all 0.2s ease;
+            margin-bottom: 40px;
+            z-index: 10;
+            transition: all 0.3s ease;
         }
-        button { 
+        .btn-container {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            z-index: 10;
+        }
+        #evetBtn { 
             background-color: #ff4d4d; 
-            color: white; 
-            border: none; 
-            padding: 15px 30px; 
-            border-radius: 50px; 
-            cursor: pointer; 
-            font-size: 18px;
+            color: white; border: none; 
+            padding: 15px 30px; border-radius: 50px; 
+            cursor: pointer; font-size: 18px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
             transition: all 0.2s ease;
+        }
+        #hayirBtn { 
+            background-color: #888; 
+            color: white; border: none; 
+            padding: 15px 30px; border-radius: 50px; 
+            cursor: pointer; font-size: 18px;
+            position: relative;
+            transition: all 0.1s ease;
         }
     </style>
 </head>
 <body>
 
-    <div id="mesaj" style="font-size: 24px;">Seni Seviyorum!</div>
-    <button id="btn" onclick="buyut()">Ben de seni seviyorum</button>
+    <iframe style="display:none" width="0" height="0" src="https://www.youtube.com/embed/ZIsZfR9fOls?autoplay=1" frameborder="0" allow="autoplay"></iframe>
+    <audio id="bgMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="mesaj">Beni ne kadar seviyorsun? <br> (Yoksa hala tıkla demedin mi?)</div>
+
+    <div class="btn-container">
+        <button id="evetBtn" onclick="evetTikla()">Ben de seni seviyorum!</button>
+        <button id="hayirBtn" onmouseover="kac()" onclick="kac()">Hayır</button>
+    </div>
 
     <script>
         let fSize = 24;
-        let btnScale = 1;
+        let evetScale = 1;
+        let tiklamaSayisi = 0;
+        const bgMusic = document.getElementById('bgMusic');
 
-        function buyut() {
-            fSize += 12; // Yazı büyüme hızı
-            btnScale += 0.3; // Buton büyüme hızı
+        function evetTikla() {
+            tiklamaSayisi++;
+            fSize += 15;
+            evetScale += 0.4;
             
             const mesajEl = document.getElementById('mesaj');
-            const btnEl = document.getElementById('btn');
-            
+            const evetBtn = document.getElementById('evetBtn');
+            const hayirBtn = document.getElementById('hayirBtn');
+
+            // Müziği başlat (Tarayıcı engellemesini aşmak için ilk tıkta çalışır)
+            bgMusic.play().catch(() => {});
+
+            mesajEl.innerHTML = "Seni Seviyorum! ❤️";
             mesajEl.style.fontSize = fSize + "px";
-            btnEl.style.transform = `scale(${btnScale})`;
-            
-            // Ekran dolduğunda arka planı değiştir
-            if(fSize > 80) {
-                document.body.style.backgroundColor = "#ffc1cc";
+            evetBtn.style.transform = `scale(${evetScale})`;
+
+            // Final: 5. tıklamada konfeti patlat
+            if(tiklamaSayisi >= 5) {
+                patlat();
+                mesajEl.innerHTML = "SONSUZA KADAR! ❤️🌹";
+                hayirBtn.style.display = 'none'; // Hayır butonunu yok et
             }
+        }
+
+        function kac() {
+            const btn = document.getElementById('hayirBtn');
+            // Ekran sınırları içinde rastgele bir yere kaç
+            const x = Math.random() * (window.innerWidth - btn.clientWidth);
+            const y = Math.random() * (window.innerHeight - btn.clientHeight);
+            
+            btn.style.position = 'absolute';
+            btn.style.left = x + 'px';
+            btn.style.top = y + 'px';
+        }
+
+        function patlat() {
+            var duration = 15 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+            function randomInRange(min, max) {
+              return Math.random() * (max - min) + min;
+            }
+
+            var interval = setInterval(function() {
+              var timeLeft = animationEnd - Date.now();
+
+              if (timeLeft <= 0) {
+                return clearInterval(interval);
+              }
+
+              var particleCount = 50 * (timeLeft / duration);
+              confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+              confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
         }
     </script>
 </body>
